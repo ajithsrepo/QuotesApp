@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/navigation_header">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_quotes"
+            android:icon="@drawable/ic_letter_quill"
+            android:title="@string/quotes" />
+
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@mipmap/baseline_favorite_border_black_24"
+            android:title="@string/favorites" />
+
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@mipmap/baseline_contact_mail_black_24"
+            android:title="@string/contact" />
+
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@mipmap/baseline_exit_to_app_black_24"
+            android:title="@string/exit" />
+    </group>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="@string/share_this_app" />
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@drawable/ic_star"
+                android:title="@string/rate_this_app" />
+        </menu>
+    </item>
+
+
+</menu>

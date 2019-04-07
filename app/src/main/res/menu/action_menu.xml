@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ajithpoison.lovequotes.Home">
+
+    <item
+        android:id="@+id/mShare"
+        android:icon="@drawable/ic_sharewhite"
+        android:title="@string/share_this_app"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mRate"
+        android:icon="@drawable/ic_favoritewhite"
+        android:title="@string/rate_this_app"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search"
+        android:icon="@mipmap/outline_search_black_24"
+        android:orderInCategory="100"
+        android:title="@string/action_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
+
+</menu>
