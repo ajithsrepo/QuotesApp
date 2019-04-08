@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectanglePromptBackground;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -71,26 +74,50 @@ public class QuotesFragment extends Fragment implements QuotesAdapter.QuotesAdap
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Do something after 100ms
-                View tutView = recyclerView.findViewHolderForAdapterPosition(1).itemView;
-                new SpotlightView.Builder(requireActivity())
-                        .introAnimationDuration(400)
-                        .performClick(true)
-                        .fadeinTextDuration(400)
-                        .headingTvColor(Color.parseColor("#ffffff"))
-                        .headingTvSize(32)
-                        .headingTvText("Loved the quote?")
-                        .subHeadingTvColor(Color.parseColor("#ffffff"))
-                        .subHeadingTvSize(24)
-                        .subHeadingTvText("Click on it to share it!")
-                        .maskColor(Color.parseColor("#dc000000"))
-                        .target(tutView)
-                        .lineAnimDuration(400)
-                        .lineAndArcColor(Color.parseColor("#eb273f"))
-                        .dismissOnTouch(true)
-                        .dismissOnBackPress(true)
-                        .enableDismissAfterShown(true)
+                new CustomPromptBuilder(requireActivity())
+                        .setTarget(R.id.action_search)
+                        .setPrimaryText("Search with keywords")
+                        .setIcon(R.mipmap.outline_search_black_24)
+                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                        {
+                            @Override
+                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                            {
+                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED || state == MaterialTapTargetPrompt.STATE_DISMISSING)
+                                {
+                                    // User has pressed the prompt target
+                                    LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+                                    int firstVisiblePosition = 0;
+                                    if (layoutManager != null) {
+                                        firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+                                    }
+                                    View tutView = recyclerView.findViewHolderForAdapterPosition(firstVisiblePosition+2).itemView;
+
+
+                                    new MaterialTapTargetPrompt.Builder(requireActivity())
+                                            .setTarget(tutView)
+                                            .setPrimaryText("Loved the quote?")
+                                            .setSecondaryText("Tap on it to see a host of options.")
+                                            .setPromptBackground(new RectanglePromptBackground())
+                                            .setPromptFocal(new RectanglePromptFocal())
+                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                            {
+                                                @Override
+                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                                {
+                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                    {
+                                                        // User has pressed the prompt target
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        })
                         .show();
+
+
             }
         }, 4000);
 
