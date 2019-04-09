@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import androidx.annotation.NonNull;
@@ -21,8 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.ajithpoison.IOnBackPressed;
 import com.ajithpoison.lovequotes.BroadcastReceiver.AlarmReceiver;
 import com.google.android.gms.ads.MobileAds;
@@ -37,7 +34,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Toast backToast;
     private NavigationView navigationView;
     boolean doubleBackToExitPressedOnce = false;
-    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

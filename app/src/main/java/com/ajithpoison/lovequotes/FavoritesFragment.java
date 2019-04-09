@@ -20,8 +20,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +49,6 @@ public class FavoritesFragment extends Fragment implements QuotesAdapter.QuotesA
         loadDatabase();
 
         return myView;
-    }
-
-    private void runLayoutAnimation(RecyclerView recyclerView){
-        Context context = recyclerView.getContext();
-        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation_fall_down);
-
-        recyclerView.setLayoutAnimation(layoutAnimationController);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        recyclerView.scheduleLayoutAnimation();
     }
 
     public void loadDatabase() {
@@ -126,10 +115,13 @@ public class FavoritesFragment extends Fragment implements QuotesAdapter.QuotesA
     public void onQuoteSelected(int quoteID) {
         viewModel.selectQuoteID(quoteID);
         IndividualQuoteFragment nextFrag = new IndividualQuoteFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-        transaction.replace(R.id.fragment_container, nextFrag, "IndividualQuoteFragment")
-                .addToBackStack(null)
-                .commit();
+        FragmentTransaction transaction;
+        if (getFragmentManager() != null) {
+            transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            transaction.replace(R.id.fragment_container, nextFrag, "IndividualQuoteFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

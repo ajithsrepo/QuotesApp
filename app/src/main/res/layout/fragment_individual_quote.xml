@@ -29,7 +29,7 @@
                 android:padding="16dp"
                 android:text="@string/full_quote"
                 android:textColor="@color/white"
-                android:textSize="35sp" />
+                android:textSize="30sp" />
 
         </androidx.cardview.widget.CardView>
 

@@ -192,7 +192,7 @@ public class IndividualQuoteFragment extends Fragment implements IOnBackPressed 
 
     @Override
     public boolean onBackPressed() {
-        if (mInterstitialAd.isLoaded()) {
+        if (mInterstitialAd.isLoaded() && ((quoteIDMF%2) == 0)) {
             mInterstitialAd.show();
             return false;
         } else {

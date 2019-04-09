@@ -66,15 +66,15 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:id="@+id/callme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/followersBg"
             android:gravity="center"
-            android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:id="@+id/callme">
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_call"/>
+                    android:src="@drawable/ic_call" />
 
             </LinearLayout>
 
@@ -94,18 +94,18 @@
         <View
             android:layout_width="1dp"
             android:layout_height="50dp"
-            android:background="@color/solidCircle"/>
+            android:background="@color/solidCircle" />
 
         <RelativeLayout
+            android:id="@+id/messageme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/followersBg"
             android:gravity="center"
-            android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:id="@+id/messageme">
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_message"/>
+                    android:src="@drawable/ic_message" />
 
             </LinearLayout>
 
@@ -136,8 +136,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -153,15 +153,15 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/onEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/developerEmail"
                     android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    android:clickable="true"
-                    android:id="@+id/onEmail"
-                    android:focusable="true" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -189,11 +189,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:focusable="true"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/twitterMail"
                     android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    android:focusable="true" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -217,15 +217,15 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/onInsta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/instagramMail"
                     android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    android:id="@+id/onInsta"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -249,15 +249,15 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/onFacebook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/facebookURL"
                     android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    android:id="@+id/onFacebook"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"

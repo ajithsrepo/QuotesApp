@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,16 +23,13 @@ import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectangleProm
 import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-
-import com.wooplr.spotlight.SpotlightView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +38,14 @@ public class QuotesFragment extends Fragment implements QuotesAdapter.QuotesAdap
     private List<Quote> quoteList;
     private QuotesAdapter mAdapter;
     private SharedViewModel viewModel;
+    private View myView;
     DatabaseHelper databaseHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View myView = inflater.inflate(R.layout.fragment_quotes, container, false);
+        myView = inflater.inflate(R.layout.fragment_quotes, container, false);
         RecyclerView recyclerView = myView.findViewById(R.id.recycler_view);
         quoteList = new ArrayList<>();
         mAdapter = new QuotesAdapter(requireActivity(), quoteList, this);
@@ -66,6 +64,7 @@ public class QuotesFragment extends Fragment implements QuotesAdapter.QuotesAdap
 
         loadDatabase();
         loadTutorial(recyclerView);
+        myView.setClickable(true);
         return myView;
     }
 
@@ -74,62 +73,57 @@ public class QuotesFragment extends Fragment implements QuotesAdapter.QuotesAdap
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                new CustomPromptBuilder(requireActivity())
-                        .setTarget(R.id.action_search)
-                        .setPrimaryText("Search with keywords")
-                        .setIcon(R.mipmap.outline_search_black_24)
-                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                        {
-                            @Override
-                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                            {
-                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED || state == MaterialTapTargetPrompt.STATE_DISMISSING)
-                                {
-                                    // User has pressed the prompt target
-                                    LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
-                                    int firstVisiblePosition = 0;
-                                    if (layoutManager != null) {
-                                        firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+                if (isAdded()) {
+                    final SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+                    if (!prefManager.getBoolean("didShowPrompt", false)) {
+                        myView.setClickable(false);
+                        new MaterialTapTargetPrompt.Builder(requireActivity())
+                                .setTarget(R.id.action_search)
+                                .setPrimaryText("Search for any quote using your favorite keywords!")
+                                .setIcon(R.mipmap.outline_search_black_24)
+                                .setCaptureTouchEventOutsidePrompt(true)
+                                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                                    @Override
+                                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state) {
+                                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED || state == MaterialTapTargetPrompt.STATE_DISMISSING) {
+                                            // User has pressed the prompt target
+
+                                            SharedPreferences.Editor prefEditor = prefManager.edit();
+                                            prefEditor.putBoolean("didShowPrompt", true);
+                                            prefEditor.apply();
+
+                                            showQuotePrompt(recyclerView);
+
+                                        }
                                     }
-                                    View tutView = recyclerView.findViewHolderForAdapterPosition(firstVisiblePosition+2).itemView;
+                                })
+                                .show();
+                    }
 
-
-                                    new MaterialTapTargetPrompt.Builder(requireActivity())
-                                            .setTarget(tutView)
-                                            .setPrimaryText("Loved the quote?")
-                                            .setSecondaryText("Tap on it to see a host of options.")
-                                            .setPromptBackground(new RectanglePromptBackground())
-                                            .setPromptFocal(new RectanglePromptFocal())
-                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                            {
-                                                @Override
-                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                                {
-                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
-                                                    {
-                                                        // User has pressed the prompt target
-                                                    }
-                                                }
-                                            })
-                                            .show();
-                                }
-                            }
-                        })
-                        .show();
-
-
+                }
             }
-        }, 4000);
+        }, 5000);
 
     }
 
-    private void runLayoutAnimation(RecyclerView recyclerView) {
-        Context context = recyclerView.getContext();
-        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
+    private void showQuotePrompt(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+        int firstVisiblePosition = 0;
+        if (layoutManager != null) {
+            firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+        }
+        View tutView = recyclerView.findViewHolderForAdapterPosition(firstVisiblePosition + 2).itemView;
 
-        recyclerView.setLayoutAnimation(layoutAnimationController);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        recyclerView.scheduleLayoutAnimation();
+
+        new MaterialTapTargetPrompt.Builder(requireActivity())
+                .setTarget(tutView)
+                .setPrimaryText("Loved the quote?")
+                .setSecondaryText("Tap on it to see a host of options.")
+                .setBackButtonDismissEnabled(true)
+                .setCaptureTouchEventOutsidePrompt(true)
+                .setPromptBackground(new RectanglePromptBackground())
+                .setPromptFocal(new RectanglePromptFocal())
+                .show();
     }
 
     public void loadDatabase() {
@@ -196,10 +190,14 @@ public class QuotesFragment extends Fragment implements QuotesAdapter.QuotesAdap
     public void onQuoteSelected(int quoteID) {
         viewModel.selectQuoteID(quoteID);
         IndividualQuoteFragment nextFrag = new IndividualQuoteFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-        transaction.replace(R.id.fragment_container, nextFrag, "IndividualQuoteFragment")
-                .addToBackStack(null)
-                .commit();
+        FragmentTransaction transaction;
+        if (getFragmentManager() != null) {
+            transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            transaction.replace(R.id.fragment_container, nextFrag, "IndividualQuoteFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 }

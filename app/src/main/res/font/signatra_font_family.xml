@@ -4,11 +4,11 @@
 
     <!-- regular -->
     <font
-        android:font="@font/signatra"
+        android:font="@font/geosanslight"
         android:fontStyle="normal"
         android:fontWeight="300"
 
-        app:font="@font/signatra"
+        app:font="@font/geosanslight"
         app:fontStyle="normal"
         app:fontWeight="300" />
 

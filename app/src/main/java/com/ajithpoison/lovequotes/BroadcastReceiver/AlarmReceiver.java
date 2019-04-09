@@ -72,7 +72,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(1,builder.build());
+        if (manager != null) {
+            manager.notify(1,builder.build());
+        }
     }
 
     public String getEmojiByUnicode(int unicode){

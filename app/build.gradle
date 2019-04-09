@@ -44,9 +44,5 @@ dependencies {
 
     implementation 'io.github.kobakei:ratethisapp:1.2.0'
 
-    implementation 'com.github.gabrielemariotti.recyclerview:recyclerview-animators:0.3.0-SNAPSHOT@aar'
-
-    implementation 'com.github.wooplr:Spotlight:1.2.3'
-
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
 }
